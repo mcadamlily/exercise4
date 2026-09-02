@@ -504,25 +504,42 @@ function projectPoly(imagedata,poly,view) {
 
 /* main -- here is where execution begins after window load */
 
-function main() {
-
-    // Get the canvas, context, and image data
-    var canvas = document.getElementById("viewport"); 
+function renderView(canvasId, view) {
+    var canvas = document.getElementById(canvasId); 
     var context = canvas.getContext("2d");
-    var w = context.canvas.width; // as set in html
-    var h = context.canvas.height;  // as set in html
-    var imagedata = context.createImageData(w,h);
+    var w = context.canvas.width;
+    var h = context.canvas.height;
+    var imagedata = context.createImageData(w, h);
     
-    // define polygon and view
-    var testEye = new Vector(0,0,0);
-    var testAt = Vector.subtract(new Vector(0,0,10),testEye);
-    var view = {eye:testEye, at:testAt, up:new Vector(0,1,0)};
-    var poly = [{x:-5,y:5,z:10,c:new Color(255,0,0,255)}, {x:5,y:5,z:10,c:new Color(0,255,0,255)}, 
-                {x:5,y:-5,z:10,c:new Color(0,0,0,255)}, {x:-5,y:-5,z:10,c:new Color(0,0,255,255)}];
+    // Define the polygon vertices with initial colors
+    var poly = [
+        {x:-5, y: 5, z:10, c:new Color(255, 0, 0, 255)},
+        {x: 5, y: 5, z:10, c:new Color(0, 255, 0, 255)},
+        {x: 5, y:-5, z:10, c:new Color(0, 0, 0, 255)},
+        {x:-5, y:-5, z:10, c:new Color(0, 0, 255, 255)}
+    ];
     
-    // Define and render a rectangle in 2D with colors and coords at corners
-    projectPoly(imagedata,poly,view);
-    fillPoly(imagedata,poly);
-    
-    context.putImageData(imagedata, 0, 0); // display the image in the context
+    projectPoly(imagedata, poly, view);
+    fillPoly(imagedata, poly);
+    context.putImageData(imagedata, 0, 0);
+}
+
+function main() {
+    // View 1: Diamond View (Green top, Red right, Blue bottom, Black left)
+    var view1 = {
+        eye: new Vector(0, 0, 20),
+        at: new Vector(0, 0, -10),
+        up: new Vector(1, 1, 0)
+    };
+
+    // View 2: Perspective Tilt View
+    var view2Eye = new Vector(-3, 2, 2);
+    var view2 = {
+        eye: view2Eye,
+        at: Vector.subtract(new Vector(0, -1, 10), view2Eye),
+        up: new Vector(0, 1, 0)
+    };
+
+    renderView("viewport1", view1);
+    renderView("viewport2", view2);
 }
