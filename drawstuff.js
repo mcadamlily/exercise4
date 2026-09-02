@@ -533,7 +533,7 @@ function main() {
     };
 
     // View 2: Perspective Tilt View
-    var view2Eye = new Vector(-3, 2, 2);
+    var view2Eye = new Vector(-3, 2, -3);
     var view2 = {
         eye: view2Eye,
         at: Vector.subtract(new Vector(0, -1, 10), view2Eye),
